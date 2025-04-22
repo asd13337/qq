@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CacauShow Fortaleza - Promoção Pós-Páscoa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #5D4037;
+            color: white;
+        }
+        
+        header {
+            background-color: #3E2723;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #D84315;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .slogan {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .cart-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            background-color: #D84315;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+        }
+        
+        .promo-banner {
+            background-color: #D84315;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: #8D6E63;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            background-color: white;
+            padding: 20px;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            min-height: 60px;
+        }
+        
+        .product-promo {
+            color: #FFD700;
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .product-price {
+            margin: 15px 0;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #BCAAA4;
+            font-size: 1.1rem;
+        }
+        
+        .new-price {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 1.8rem;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .add-to-cart {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 0;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #388E3C;
+        }
+        
+        .store-info {
+            background-color: #3E2723;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 1000px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .store-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+        
+        .store-info p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        /* Modal Carrinho */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+        
+        .modal-content {
+            background-color: #5D4037;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: white;
+        }
+        
+        .cart-items {
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #8D6E63;
+        }
+        
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        .cart-item-info {
+            flex-grow: 1;
+            padding: 0 15px;
+        }
+        
+        .cart-item-title {
+            font-weight: bold;
+        }
+        
+        .cart-item-price {
+            color: #FFD700;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            background-color: #3E2723;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .quantity {
+            margin: 0 10px;
+        }
+        
+        .remove-item {
+            color: #D84315;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+        
+        .cart-total {
+            text-align: right;
+            font-size: 1.3rem;
+            margin: 20px 0;
+        }
+        
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .cart-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .continue-shopping {
+            background-color: #8D6E63;
+            color: white;
+        }
+        
+        .checkout {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        /* Página de Pagamento */
+        .checkout-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #8D6E63;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .checkout-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #5D4037;
+            background-color: #5D4037;
+            color: white;
+        }
+        
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .col {
+            flex: 1;
+        }
+        
+        .payment-methods {
+            margin: 20px 0;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .payment-method input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .complete-order {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        footer {
+            background-color: #3E2723;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 5px solid #D84315;
+        }
+        
+        footer p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .products-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .product-card {
+                width: 90%;
+            }
+            
+            .promo-banner {
+                font-size: 1.4rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">CacauShow Fortaleza</div>
+        <div class="slogan">Os melhores chocolates da cidade!</div>
+        <div class="cart-icon" id="cartIcon">
+            🛒 <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </header>
+    
+    <div class="promo-banner">
+        PROMOÇÃO PÓS-PÁSCOA! TODOS OS OVOS POR APENAS R$49,90!
+    </div>
+    
+    <div class="products-container">
+        <!-- Produto 1 -->
+        <div class="product-card">
+            <img src="https://www.cacaushow.com.br/on/demandware.static/-/Sites-masterCatalog_CacauShow/default/dw2910988c/large/1003603_1.png" 
+                 alt="Ovo de Páscoa ao Leite Pantufa Garfield" 
+                 class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Ovo de Páscoa ao Leite Pantufa Garfield P 170g</h3>
+                <div class="product-promo">Compre 2 Pague 1</div>
+                <div class="product-price">
+                    <span class="old-price">De: R$179,99</span>
+                    <span class="new-price">Por: R$49,90</span>
+                </div>
+                <button class="add-to-cart" data-id="1" data-name="Ovo Pantufa Garfield" data-price="49.90" data-image="https://www.cacaushow.com.br/on/demandware.static/-/Sites-masterCatalog_CacauShow/default/dw2910988c/large/1003603_1.png">COMPRAR AGORA</button>
+            </div>
+        </div>
+        
+        <!-- Produto 2 -->
+        <div class="product-card">
+            <img src="https://www.cacaushow.com.br/on/demandware.static/-/Sites-masterCatalog_CacauShow/default/dwd395e1e8/large/1003560_1.png" 
+                 alt="Ovo de Páscoa ao Leite Ursinhos Carinhosos" 
+                 class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Ovo de Páscoa ao Leite Ursinhos Carinhosos Pelúcia Amorosa 170g</h3>
+                <div class="product-promo">Compre 2 Pague 1</div>
+                <div class="product-price">
+                    <span class="old-price">De: R$129,99</span>
+                    <span class="new-price">Por: R$49,90</span>
+                </div>
+                <button class="add-to-cart" data-id="2" data-name="Ovo Ursinhos Carinhosos" data-price="49.90" data-image="https://www.cacaushow.com.br/on/demandware.static/-/Sites-masterCatalog_CacauShow/default/dwd395e1e8/large/1003560_1.png">COMPRAR AGORA</button>
+            </div>
+        </div>
+        
+        <!-- Produto 3 -->
+        <div class="product-card">
+            <img src="https://www.cacaushow.com.br/on/demandware.static/-/Sites-masterCatalog_CacauShow/default/dwf092166a/large/1003569_1.png" 
+                 alt="Ovo de Páscoa ao Leite Meninas Superpoderosas" 
+                 class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Ovo de Páscoa ao Leite Meninas Superpoderosas Pelúcia Florzinha 170g</h3>
+                <div class="product-price">
+                    <span class="old-price">De: R$124,99</span>
+                    <span class="new-price">Por: R$49,90</span>
+                </div>
+                <button class="add-to-cart" data-id="3" data-name="Ovo Meninas Superpoderosas" data-price="49.90" data-image="https://www.cacaushow.com.br/on/demandware.static/-/Sites-masterCatalog_CacauShow/default/dwf092166a/large/1003569_1.png">COMPRAR AGORA</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="store-info">
+        <h2>RETIRADA NA LOJA MAIS PRÓXIMA</h2>
+        <p>Após a compra, você receberá um e-mail com o endereço da loja mais próxima para retirada.</p>
+        <p>Horário de funcionamento: Segunda a Sábado, das 9h às 21h</p>
+        <p>Promoção válida apenas para retirada em loja física</p>
+    </div>
+    
+    <!-- Modal do Carrinho -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Seu Carrinho</h2>
+            <div class="cart-items" id="cartItems">
+                <!-- Itens do carrinho serão adicionados aqui -->
+            </div>
+            <div class="cart-total">
+                Total: R$<span id="cartTotal">0.00</span>
+            </div>
+            <div class="cart-actions">
+                <button class="cart-btn continue-shopping">Continuar Comprando</button>
+                <button class="cart-btn checkout" id="checkoutBtn">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Checkout (inicialmente oculta) -->
+    <div id="checkoutPage" style="display: none;">
+        <div class="checkout-container">
+            <h2 class="checkout-title">Finalizar Compra</h2>
+            
+            <form id="checkoutForm">
+                <h3>Informações Pessoais</h3>
+                <div class="form-group">
+                    <label for="name">Nome Completo</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Endereço para Retirada</h3>
+                <div class="form-group">
+                    <label for="store">Loja de Retirada</label>
+                    <select id="store" required>
+                        <option value="">Selecione uma loja</option>
+                        <option value="Aldeota">Aldeota - Av. Santos Dumont, 3131</option>
+                        <option value="Dionisio Torres">Dionísio Torres - Av. Antônio Sales, 2900</option>
+                        <option value="Meireles">Meireles - Av. Dom Luís, 880</option>
+                    </select>
+                </div>
+                
+                <h3>Método de Pagamento</h3>
+                <div class="payment-methods">
+                    <div class="payment-method">
+                        <input type="radio" id="pix" name="payment" value="PIX" checked>
+                        <label for="pix">PIX</label>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="credit" name="payment" value="Cartão de Crédito">
+                        <label for="credit">Cartão de Crédito</label>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="debit" name="payment" value="Cartão de Débito">
+                        <label for="debit">Cartão de Débito</label>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="money" name="payment" value="Dinheiro">
+                        <label for="money">Dinheiro na Retirada</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="complete-order">Concluir Pedido</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Página de Confirmação (inicialmente oculta) -->
+    <div id="confirmationPage" style="display: none;">
+        <div class="checkout-container" style="text-align: center;">
+            <h2 class="checkout-title">Pedido Confirmado!</h2>
+            <p style="margin: 20px 0; font-size: 1.2rem;">Obrigado por comprar na CacauShow Fortaleza!</p>
+            <p style="margin: 10px 0;">Seu pedido foi recebido e está sendo preparado.</p>
+            <p style="margin: 10px 0;">Você receberá um e-mail com os detalhes da sua compra.</p>
+            <p style="margin: 20px 0; font-weight: bold;">Número do Pedido: <span id="orderNumber"></span></p>
+            <button class="complete-order" onclick="window.location.reload()">Voltar à Loja</button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>CacauShow Fortaleza © 2025 - Todos os direitos reservados</p>
+        <p>Promoção válida até o fim do estoque</p>
+        <p>Endereço: Av. Santos Dumont, 3131 - Loja 01 - Aldeota, Fortaleza - CE</p>
+    </footer>
+
+    <script>
+        // Carrinho de compras
+        let cart = [];
+        
+        // Elementos do DOM
+        const cartIcon = document.getElementById('cartIcon');
+        const cartCount = document.getElementById('cartCount');
+        const cartModal = document.getElementById('cartModal');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const closeModal = document.querySelector('.close');
+        const continueShopping = document.querySelector('.continue-shopping');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const checkoutPage = document.getElementById('checkoutPage');
+        const productsPage = document.querySelector('.products-container').parentElement;
+        const confirmationPage = document.getElementById('confirmationPage');
+        const checkoutForm = document.getElementById('checkoutForm');
+        const orderNumber = document.getElementById('orderNumber');
+        
+        // Botões "Adicionar ao carrinho"
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        
+        // Abrir modal do carrinho
+        cartIcon.addEventListener('click', () => {
+            cartModal.style.display = 'block';
+            updateCartDisplay();
+        });
+        
+        // Fechar modal do carrinho
+        closeModal.addEventListener('click', () => {
+            cartModal.style.display = 'none';
+        });
+        
+        continueShopping.addEventListener('click', () => {
+            cartModal.style.display = 'none';
+        });
+        
+        // Adicionar produto ao carrinho
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const id = button.getAttribute('data-id');
+                const name = button.getAttribute('data-name');
+                const price = parseFloat(button.getAttribute('data-price'));
+                const image = button.getAttribute('data-image');
+                
+                // Verificar se o item já está no carrinho
+                const existingItem = cart.find(item => item.id === id);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id,
+                        name,
+                        price,
+                        image,
+                        quantity: 1
+                    });
+                }
+                
+                updateCartCount();
+                showAddedToCart(name);
+            });
+        });
+        
+        // Atualizar contador do carrinho
+        function updateCartCount() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+        
+        // Atualizar exibição do carrinho
+        function updateCartDisplay() {
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Seu carrinho está vazio</p>';
+                cartTotal.textContent = '0.00';
+                return;
+            }
+            
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'cart-item';
+                cartItemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">R$${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                    </div>
+                    <div class="remove-item" data-id="${item.id}">×</div>
+                `;
+                
+                cartItems.appendChild(cartItemElement);
+            });
+            
+            // Adicionar eventos aos botões de quantidade e remoção
+            document.querySelectorAll('.minus').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    const item = cart.find(item => item.id === id);
+                    
+                    if (item.quantity > 1) {
+                        item.quantity -= 1;
+                    } else {
+                        cart = cart.filter(item => item.id !== id);
+                    }
+                    
+                    updateCartDisplay();
+                    updateCartCount();
+                });
+            });
+            
+            document.querySelectorAll('.plus').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    const item = cart.find(item => item.id === id);
+                    item.quantity += 1;
+                    
+                    updateCartDisplay();
+                    updateCartCount();
+                });
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    cart = cart.filter(item => item.id !== id);
+                    
+                    updateCartDisplay();
+                    updateCartCount();
+                });
+            });
+            
+            cartTotal.textContent = total.toFixed(2);
+        }
+        
+        // Mostrar mensagem de produto adicionado
+        function showAddedToCart(productName) {
+            const message = document.createElement('div');
+            message.style.position = 'fixed';
+            message.style.bottom = '20px';
+            message.style.right = '20px';
+            message.style.backgroundColor = '#4CAF50';
+            message.style.color = 'white';
+            message.style.padding = '15px';
+            message.style.borderRadius = '5px';
+            message.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
+            message.style.zIndex = '1000';
+            message.textContent = `${productName} adicionado ao carrinho!`;
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.style.transition = 'opacity 0.5s';
+                message.style.opacity = '0';
+                setTimeout(() => message.remove(), 500);
+            }, 2000);
+        }
+        
+        // Finalizar compra
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            
+            cartModal.style.display = 'none';
+            productsPage.style.display = 'none';
+            document.querySelector('.store-info').style.display = 'none';
+            checkoutPage.style.display = 'block';
+        });
+        
+        // Enviar formulário de checkout
+        checkoutForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simular processamento do pedido
+            const orderNum = 'CS' + Math.floor(Math.random() * 1000000);
+            orderNumber.textContent = orderNum;
+            
+            // Mostrar página de confirmação
+            checkoutPage.style.display = 'none';
+            confirmationPage.style.display = 'block';
+            
+            // Limpar carrinho
+            cart = [];
+            updateCartCount();
+        });
+        
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', (e) => {
+            if (e.target === cartModal) {
+                cartModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
